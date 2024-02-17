@@ -1,6 +1,12 @@
-package jwt.auth;
+package com.example.demo.jwt.auth;
 
 public class AuthenticationResponse {
+
+    private String token;
+
+    public AuthenticationResponse(String token) {
+        this.token = token;
+    }
     public String getToken() {
         return token;
     }
@@ -9,9 +15,7 @@ public class AuthenticationResponse {
         this.token = token;
     }
 
-    private String token;
 
-    public AuthenticationResponse(String token) {
-        this.token = token;
-    }
+
+
 }

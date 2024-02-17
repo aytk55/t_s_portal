@@ -1,4 +1,4 @@
-package jwt.user;
+package com.example.demo.jwt.user;
 
 import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -12,11 +12,11 @@ import java.util.List;
 @Table(name = "_user")
 public class User implements UserDetails {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String firstname;
     private String lastname;
-    private String email;
+    private String username;
     private String password;
     @Enumerated(EnumType.STRING)
     private Role role;
@@ -24,10 +24,10 @@ public class User implements UserDetails {
     public User() {
 
     }
-    public User(String firstname, String lastname, String email, String password) {
+    public User(String firstname, String lastname, String username, String password) {
         this.firstname = firstname;
         this.lastname = lastname;
-        this.email = email;
+        this.username = username;
         this.password = password;
 
     }
@@ -58,12 +58,10 @@ public class User implements UserDetails {
         this.lastname = lastname;
     }
 
-    public String getEmail() {
-        return email;
-    }
 
-    public void setEmail(String email) {
-        this.email = email;
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     @Override
@@ -77,7 +75,7 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return email;
+        return username;
     }
 
 

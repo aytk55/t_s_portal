@@ -5,6 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface PDFRepository extends JpaRepository<PDF,Long> {
-    List<PDF> findByStudentId(Long studentId);
+public interface PDFRepository extends JpaRepository<PDF,Integer> {
+    List<PDF> findByUserId(Integer userId);
 }

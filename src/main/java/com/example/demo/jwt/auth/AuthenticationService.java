@@ -1,12 +1,12 @@
-package jwt.auth;
+package com.example.demo.jwt.auth;
 
 
-import jwt.config.JwtService;
-import jwt.user.Role;
-import jwt.user.User;
-import jwt.user.UserRepository;
 
-
+import com.example.demo.jwt.config.JwtService;
+import com.example.demo.jwt.user.Role;
+import com.example.demo.jwt.user.User;
+import com.example.demo.jwt.user.UserRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -19,18 +19,18 @@ public class AuthenticationService {
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
 
-    public AuthenticationService(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtService jwtService, AuthenticationManager authenticationManager) {
+    public AuthenticationService(PasswordEncoder passwordEncoder,UserRepository userRepository,  JwtService jwtService, AuthenticationManager authenticationManager) {
         this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
         this.jwtService = jwtService;
         this.authenticationManager = authenticationManager;
+        this.passwordEncoder=passwordEncoder;
     }
 
-    public AuthenticationResponse register(RegisterRequest request) {
+    public AuthenticationResponse register(AuthenticationRequest request) {
         User user =new User();
-        user.setFirstname(request.getFirstname());
+        user.setFirstname("demented");
         user.setPassword(passwordEncoder.encode(request.getPassword()));
-        user.setEmail(request.getEmail());
+        user.setUsername(request.getUsername());
         user.setRole(Role.USER);
         userRepository.save(user);
         var jwtToken=jwtService.generateToken(user);
@@ -40,11 +40,12 @@ public class AuthenticationService {
 
     }
 
+
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
         authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(request.getEmail(),request.getPassword())
+                new UsernamePasswordAuthenticationToken(request.getUsername(),request.getPassword())
         );
-        User user= userRepository.findByEmail(request.getEmail()).orElseThrow();
+        User user= userRepository.findByUsername(request.getUsername()).orElseThrow();
         var jwtToken=jwtService.generateToken(user);
         return new AuthenticationResponse(jwtToken);
 
